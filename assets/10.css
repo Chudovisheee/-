@@ -64,24 +64,6 @@
 
 #textbox .scene-instructions { font-weight: 600; }
 
-.scene-leaf {
-  transform-origin: 40% 85%;
-  animation: scene-grow 1s both;
-}
-
-.scene-heart {
-  animation: scene-float 4s ease-in-out infinite;
-}
-
-.scene-eye {
-  translate: var(--look-x, 0%) var(--look-y, 0%);
-  transition: translate 120ms ease-out;
-}
-
-.scene-eye-idle {
-  animation: scene-glance 5s ease-in-out infinite;
-}
-
 .scene-maze { touch-action: none; }
 .scene-maze .scene-walker { cursor: grab; }
 .scene-maze .scene-walker.is-walking { cursor: grabbing; }
@@ -98,39 +80,8 @@
   animation-direction: alternate-reverse;
 }
 
-.scene-food {
-  touch-action: none;
-  transition: filter 150ms, scale 150ms;
-}
-
-.scene-food:hover, .scene-food.is-selected {
-  filter: drop-shadow(0 0 5px #fff9d6);
-  scale: 1.11;
-}
-
-.bambi-scene .scene-food-ghost {
-  z-index: 5;
-  filter: drop-shadow(0 0 5px #fff9d6);
-}
-
 .scene-fed {
   animation: scene-fed 450ms ease-out;
-}
-
-@keyframes scene-grow {
-  from { opacity: 0; transform: scale(0.05); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-@keyframes scene-float {
-  0% { opacity: 0; translate: 0 55%; }
-  22%, 58% { opacity: 1; }
-  100% { opacity: 0; translate: 0 -120%; }
-}
-
-@keyframes scene-glance {
-  0%, 100% { transform: translate(-13%, 3%); }
-  42%, 68% { transform: translate(15%, -9%); }
 }
 
 @keyframes scene-step {
