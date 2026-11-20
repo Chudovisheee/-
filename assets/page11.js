@@ -51,9 +51,8 @@
     sprite(board, board, 'faline', 242, 805, 170, 152);
     sprite(board, board, 'gobo', 634, 809, 149, 154);
 
-    const smallEyes = [[662, 865, 4.5, 5], [670, 866, 4.5, 5]];
     const largeEyes = [[731, 349, 12, 15], [781, 352, 12, 15]];
-    const eyes = [...smallEyes, ...largeEyes].map(([x, y, width, height]) => ({
+    const eyes = largeEyes.map(([x, y, width, height]) => ({
       image: sprite(board, board, 'gobo-right-eye', x, y, width, height, 'scene-eye'),
       x: x + width / 2,
       y: y + height / 2
@@ -77,8 +76,8 @@
         const dx = point.x - x;
         const dy = point.y - y;
         const distance = Math.max(36, Math.hypot(dx, dy));
-        image.style.setProperty('--look-x', `${dx / distance * 30}%`);
-        image.style.setProperty('--look-y', `${dy / distance * 23}%`);
+        image.style.setProperty('--look-x', `${dx / distance * 13}%`);
+        image.style.setProperty('--look-y', `${dy / distance * 10}%`);
       }
     }
 
@@ -101,9 +100,11 @@
       fed++;
       const nextFood = board.querySelector('.scene-food:not([hidden])');
       if (hadFocus) (nextFood || target).focus();
-      status.textContent = fed === food.length
-        ? 'Все угощения найдены. Гобо сыт!'
-        : `Гобо съел угощение. Найдено ${fed} из ${food.length}.`;
+      if (fed === food.length) {
+        finish('Гобо сыт!', 'Ты нашёл все кексы и листья.');
+        return;
+      }
+      status.textContent = `Гобо съел угощение. Найдено ${fed} из ${food.length}.`;
     }
 
     food.forEach(([name, x, y]) => {
@@ -151,8 +152,32 @@
     upperTarget.addEventListener('click', feed);
   }
 
-  const board = document.querySelector('[data-bambi-scene="11"]');
-  board.replaceChildren();
-  drawBackground(board);
-  feedGobo(board, board.parentElement.querySelector('.scene-status'));
+
+  let board = document.querySelector('[data-bambi-scene]');
+  const overlay = document.getElementById('game_overlay');
+  const play = overlay.querySelector('button');
+  const status = board.parentElement.querySelector('.scene-status');
+
+  function finish(title, message) {
+    board.inert = true;
+    status.textContent = '';
+    overlay.querySelector('h2').textContent = title;
+    overlay.querySelector('.game-card__text').textContent = message;
+    overlay.querySelector('.game-card__hint').hidden = true;
+    play.textContent = 'Играть ещё';
+    overlay.hidden = false;
+    play.focus();
+  }
+
+  play.addEventListener('click', () => {
+    const fresh = board.cloneNode(false);
+    board.replaceWith(fresh);
+    board = fresh;
+    board.inert = false;
+    overlay.hidden = true;
+    status.textContent = '';
+    drawBackground(board);
+    feedGobo(board, status);
+    board.querySelector('.scene-food').focus({ preventScroll: true });
+  });
 })();

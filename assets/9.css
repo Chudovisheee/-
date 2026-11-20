@@ -66,15 +66,15 @@
 
 .scene-leaf {
   transform-origin: 40% 85%;
-  animation: scene-grow 1s both;
+  animation: scene-grow 2.6s both;
 }
 
 .scene-heart {
-  animation: scene-float 4s ease-in-out infinite;
+  animation: scene-float 8s ease-in-out infinite;
 }
 
 .scene-eye-idle {
-  animation: scene-glance 5s ease-in-out infinite;
+  animation: scene-glance 10s ease-in-out infinite;
 }
 
 @keyframes scene-grow {

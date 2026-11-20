@@ -34,7 +34,7 @@
     ];
     leaves.forEach(([name, ...position], index) => {
       const leaf = sprite(board, board, name, ...position, 'scene-leaf');
-      leaf.style.animationDelay = `${index * 85}ms`;
+      leaf.style.animationDelay = `${index * 180}ms`;
     });
     sprite(board, board, 'faline', 95, 406, 445, 674);
     sprite(board, board, 'bambi', 513, 193, 519, 887);

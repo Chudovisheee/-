@@ -90,7 +90,7 @@
       clearTimeout(timer);
       timer = setTimeout(() => walker.classList.remove('is-walking'), 260);
       if (progress >= route.length - 1) {
-        status.textContent = 'Бемби добрался до Фалины!';
+        finish('Бемби нашёл Фалину!', 'Ты провёл Бемби по розовой тропинке.');
         faline.classList.add('scene-fed');
       }
     }
@@ -103,7 +103,7 @@
       offset = { x: x - start.x, y: y - start.y };
       active = event.pointerId;
       walker.setPointerCapture(active);
-      status.textContent = 'Веди Бемби по розовой тропинке к Фалине.';
+      status.textContent = '';
     });
 
     walker.addEventListener('pointermove', event => {
@@ -128,10 +128,14 @@
         }
       }
 
-      if (closest > 45) {
+      if (closest > 80) {
+        walker.releasePointerCapture(active);
+        active = null;
+        finish('Охотник заметил Бемби', 'Бемби сбился с тропинки. Попробуй ещё раз.');
+      } else if (closest > 45) {
         status.textContent = 'Вернись к месту, где остановился Бемби, и продолжай по розовой тропинке.';
       } else if (best > progress + 0.01) {
-        status.textContent = 'Веди Бемби по розовой тропинке к Фалине.';
+        status.textContent = '';
         const finish = route.length - 1;
         advance(best > finish - 0.1 ? finish : best);
       }
@@ -149,8 +153,32 @@
     });
   }
 
-  const board = document.querySelector('[data-bambi-scene="10"]');
-  board.replaceChildren();
-  drawBackground(board);
-  followTrail(board, board.parentElement.querySelector('.scene-status'));
+
+  let board = document.querySelector('[data-bambi-scene]');
+  const overlay = document.getElementById('game_overlay');
+  const play = overlay.querySelector('button');
+  const status = board.parentElement.querySelector('.scene-status');
+
+  function finish(title, message) {
+    board.inert = true;
+    status.textContent = '';
+    overlay.querySelector('h2').textContent = title;
+    overlay.querySelector('.game-card__text').textContent = message;
+    overlay.querySelector('.game-card__hint').hidden = true;
+    play.textContent = 'Играть ещё';
+    overlay.hidden = false;
+    play.focus();
+  }
+
+  play.addEventListener('click', () => {
+    const fresh = board.cloneNode(false);
+    board.replaceWith(fresh);
+    board = fresh;
+    board.inert = false;
+    overlay.hidden = true;
+    status.textContent = '';
+    drawBackground(board);
+    followTrail(board, status);
+    board.querySelector('.scene-walker').focus({ preventScroll: true });
+  });
 })();

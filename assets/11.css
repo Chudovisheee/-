@@ -66,7 +66,7 @@
 
 .scene-eye {
   translate: var(--look-x, 0%) var(--look-y, 0%);
-  transition: translate 120ms ease-out;
+  transition: translate 340ms ease-out;
 }
 
 .scene-food {
@@ -88,5 +88,90 @@
   .bambi-scene *, .bambi-scene *::before, .bambi-scene *::after {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+#scene { container-type: inline-size; }
+#game_overlay { --su: 0.052083cqw; }
+#game_overlay[hidden] { display: none; }
+#game_overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6%;
+  background: rgba(20, 40, 30, 0.35);
+  cursor: default;
+  transition: opacity 0.35s ease;
+}
+#game_overlay.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.game-card {
+  max-width: 78%;
+  padding: max(16px, calc(var(--su) * 64)) max(18px, calc(var(--su) * 72));
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  font-family: "Montserrat Alternates", Arial, sans-serif;
+}
+.game-card__title {
+  margin: 0 0 0.6em;
+  font-size: max(17px, calc(var(--su) * 64));
+  font-weight: 700;
+  line-height: 1.15;
+  color: #000000;
+}
+.game-card__text {
+  margin: 0 0 0.8em;
+  font-size: max(13px, calc(var(--su) * 36));
+  line-height: 1.45;
+  color: #000000;
+}
+.game-card__hint {
+  margin: 0 0 1.4em;
+  font-size: max(12px, calc(var(--su) * 30));
+  line-height: 1.4;
+  color: #818181;
+}
+.game-card__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.7em 1.8em;
+  border: none;
+  border-radius: 999px;
+  background: #000000;
+  color: #ffffff;
+  font-family: "Open Sans", Arial, sans-serif;
+  font-size: max(14px, calc(var(--su) * 36));
+  cursor: pointer;
+}
+.game-card__button:hover {
+  background: #20bdd2;
+}
+
+@media screen and (orientation: portrait) and (max-width: 600px) {
+  #game_overlay {
+    padding: 3%;
+  }
+  .game-card {
+    max-width: 94%;
+    padding: 14px 16px;
+  }
+  .game-card__title {
+    font-size: 16px;
+  }
+  .game-card__text {
+    font-size: 12.5px;
+  }
+  .game-card__hint {
+    margin-bottom: 0.9em;
+    font-size: 11.5px;
   }
 }
