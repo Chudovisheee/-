@@ -75,20 +75,38 @@
       place(walker, x - size * 0.5, y - size * 0.77, size, size);
     }
 
-    function nearTrail() {
-      return route.slice(1).some(([bx, by], i) => {
-        const [ax, ay] = route[i];
-        const dx = bx - ax;
-        const dy = by - ay;
-        const t = Math.max(0, Math.min(1, ((x - ax) * dx + (y - ay) * dy) / (dx * dx + dy * dy)));
-        return Math.hypot(x - ax - t * dx, y - ay - t * dy) < 86;
-      });
+    const greenTrail = [
+      route[0], [386, 272], [473, 326], [539, 406], [627, 478],
+      [745, 518], [843, 522], [916, 460], [944, 365], [919, 293],
+      [850, 235], [744, 214], [651, 238], [592, 295], [579, 379],
+      [584, 490], [551, 530], [500, 574], [465, 672], [435, 728],
+      [390, 784], [313, 837], [229, 905]
+    ];
+
+    function nearestPoint(px, py, trail) {
+      let best = { distance: Infinity };
+      for (let i = 1; i < trail.length; i++) {
+        const [ax, ay] = trail[i - 1];
+        const dx = trail[i][0] - ax;
+        const dy = trail[i][1] - ay;
+        const t = Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / (dx * dx + dy * dy)));
+        const cx = ax + dx * t;
+        const cy = ay + dy * t;
+        const distance = Math.hypot(px - cx, py - cy);
+        if (distance < best.distance) best = { x: cx, y: cy, distance };
+      }
+      return best;
     }
 
     function move(nextX, nextY) {
       if (ended) return;
-      x = Math.max(30, Math.min(1050, nextX));
-      y = Math.max(60, Math.min(1045, nextY));
+      const pink = nearestPoint(nextX, nextY, route);
+      const green = nearestPoint(nextX, nextY, greenTrail);
+      const nearest = pink.distance <= green.distance ? pink : green;
+      const margin = 110;
+      const scale = Math.min(1, margin / Math.max(1, nearest.distance));
+      x = nearest.x + (nextX - nearest.x) * scale;
+      y = nearest.y + (nextY - nearest.y) * scale;
       draw();
       walker.classList.add('is-walking');
       clearTimeout(stepTimer);
@@ -105,7 +123,7 @@
         return;
       }
       const warning = hunter < 1.8 ? 'Осторожно, впереди охотник!'
-        : nearTrail() ? '' : 'Бемби сошёл с розовой тропинки.';
+        : pink.distance < 86 ? '' : 'Бемби сошёл с розовой тропинки.';
       if (status.textContent !== warning) status.textContent = warning;
     }
 
