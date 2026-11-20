@@ -184,3 +184,17 @@
     font-size: 11.5px;
   }
 }
+
+.bambi-scene .trail-note {
+  transform: translate(-50%, -50%);
+  width: clamp(44px, 8%, 68px);
+  aspect-ratio: 1;
+  border: 3px solid white;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px #40332655;
+  color: #fff;
+  font: bold clamp(21px, 4cqw, 35px)/1 sans-serif;
+}
+
+.bambi-scene .pink-note { background: #ae455e; }
+.bambi-scene .green-note { background: #4b7842; }

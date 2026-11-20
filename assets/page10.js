@@ -27,14 +27,6 @@
     return control;
   }
 
-  function pointer(board, event) {
-    const rect = board.getBoundingClientRect();
-    return {
-      x: (event.clientX - rect.left) * 1080 / rect.width,
-      y: (event.clientY - rect.top) * 1080 / rect.height
-    };
-  }
-
   function drawBackground(board) {
     sprite(board, board, 'background', 0, 0, 1080, 1080);
   }
@@ -51,7 +43,10 @@
       [575, 720], [614, 749], [659, 772], [727, 801], [802, 854]
     ];
     const faline = sprite(board, board, 'faline', 737, 791, 249, 248);
-    const walker = button(board, 'Бемби. Веди его по тропинке', 'scene-walker');
+    const walker = document.createElement('div');
+    walker.className = 'scene-walker';
+    walker.style.position = 'absolute';
+    board.append(walker);
     const legs = [
       ['hind-far', 4, 162, 54, 125, true], ['front-far', 145, 175, 54, 111, false],
       ['hind-near', 0, 158, 54, 128, false], ['front-near', 124, 167, 42, 119, true]
@@ -66,10 +61,6 @@
     }
 
     let progress = 0;
-    let active = null;
-    let offset = { x: 0, y: 0 };
-    let timer;
-
     function pointAt(value) {
       const index = Math.min(Math.floor(value), route.length - 2);
       const [x, y] = route[index];
@@ -83,76 +74,64 @@
       place(walker, x - 148, y - 228, 294, 294);
     }
 
-    function advance(value) {
-      progress = value;
-      position(progress);
-      walker.classList.add('is-walking');
-      clearTimeout(timer);
-      timer = setTimeout(() => walker.classList.remove('is-walking'), 260);
-      if (progress >= route.length - 1) {
-        finish('Бемби нашёл Фалину!', 'Ты провёл Бемби по розовой тропинке.');
-        faline.classList.add('scene-fed');
+    const stops = [4, 10, 16, 22, 28, 34];
+    const greenNotes = [[412, 289], [937, 386], [686, 508], [501, 569], [442, 719], [396, 777]];
+    const pink = button(board, 'Розовая нота', 'trail-note pink-note');
+    const green = button(board, 'Зелёная нота', 'trail-note green-note');
+    pink.textContent = '♫';
+    green.textContent = '♪';
+    let stage = 0;
+    let mistakes = 0;
+
+    function showNotes() {
+      for (const [note, [x, y]] of [[pink, route[stops[stage]]], [green, greenNotes[stage]]]) {
+        note.style.left = `${x / 10.8}%`;
+        note.style.top = `${y / 10.8}%`;
+        note.hidden = false;
       }
+      pink.focus({ preventScroll: true });
     }
 
-    position(0);
-    walker.addEventListener('pointerdown', event => {
-      if (active !== null || !event.isPrimary || event.button !== 0 || progress >= route.length - 1) return;
-      const start = pointer(board, event);
-      const [x, y] = pointAt(progress);
-      offset = { x: x - start.x, y: y - start.y };
-      active = event.pointerId;
-      walker.setPointerCapture(active);
+    pink.addEventListener('click', () => {
+      pink.hidden = green.hidden = true;
       status.textContent = '';
-    });
-
-    walker.addEventListener('pointermove', event => {
-      if (event.pointerId !== active || progress >= route.length - 1) return;
-      const point = pointer(board, event);
-      point.x += offset.x;
-      point.y += offset.y;
-      let closest = Infinity;
-      let best = progress;
-      const limit = Math.min(Math.floor(progress) + 2, route.length - 2);
-
-      for (let index = Math.floor(progress); index <= limit; index++) {
-        const [x, y] = route[index];
-        const dx = route[index + 1][0] - x;
-        const dy = route[index + 1][1] - y;
-        const projection = ((point.x - x) * dx + (point.y - y) * dy) / (dx * dx + dy * dy);
-        const fraction = Math.min(1, Math.max(0, progress - index, projection));
-        const distance = Math.hypot(point.x - x - fraction * dx, point.y - y - fraction * dy);
-        if (distance < closest) {
-          closest = distance;
-          best = index + fraction;
+      const start = progress;
+      const end = stops[stage];
+      const began = performance.now();
+      const duration = matchMedia('(prefers-reduced-motion: reduce)').matches ? 1 : 1000;
+      walker.classList.add('is-walking');
+      function step(now) {
+        const fraction = Math.min(1, (now - began) / duration);
+        position(start + (end - start) * fraction);
+        if (fraction < 1) {
+          requestAnimationFrame(step);
+          return;
+        }
+        progress = end;
+        stage++;
+        walker.classList.remove('is-walking');
+        if (stage === stops.length) {
+          faline.classList.add('scene-fed');
+          finish('Бемби нашёл Фалину!', 'Ты провёл Бемби по розовой тропинке.');
+        } else {
+          showNotes();
         }
       }
+      requestAnimationFrame(step);
+    });
 
-      if (closest > 80) {
-        walker.releasePointerCapture(active);
-        active = null;
-        finish('Охотник заметил Бемби', 'Бемби сбился с тропинки. Попробуй ещё раз.');
-      } else if (closest > 45) {
-        status.textContent = 'Вернись к месту, где остановился Бемби, и продолжай по розовой тропинке.';
-      } else if (best > progress + 0.01) {
-        status.textContent = '';
-        const finish = route.length - 1;
-        advance(best > finish - 0.1 ? finish : best);
+    green.addEventListener('click', event => {
+      if (event.detail > 1) return;
+      mistakes++;
+      if (mistakes === 2) {
+        finish('Охотник заметил Бемби', 'Зелёные ноты ведут к охотнику. Попробуй ещё раз.');
+      } else {
+        status.textContent = 'Отсюда слышен охотник! Выбери розовую ноту.';
       }
     });
-
-    walker.addEventListener('lostpointercapture', () => {
-      active = null;
-      walker.classList.remove('is-walking');
-    });
-
-    walker.addEventListener('keydown', event => {
-      if (event.key !== 'ArrowRight') return;
-      event.preventDefault();
-      if (progress < route.length - 1) advance(Math.min(progress + 1, route.length - 1));
-    });
+    position(0);
+    showNotes();
   }
-
 
   let board = document.querySelector('[data-bambi-scene]');
   const overlay = document.getElementById('game_overlay');
@@ -179,6 +158,5 @@
     status.textContent = '';
     drawBackground(board);
     followTrail(board, status);
-    board.querySelector('.scene-walker').focus({ preventScroll: true });
   });
 })();
