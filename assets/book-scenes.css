@@ -1,0 +1,150 @@
+#scene.bambi-scene-shell {
+  width: min(100vh, 56vw, 2160px);
+  height: auto;
+}
+
+@media screen and (orientation: portrait) {
+  #scene.bambi-scene-shell { width: 100%; }
+}
+
+.bambi-scene {
+  overflow: hidden;
+  isolation: isolate;
+  width: 100%;
+  aspect-ratio: 1;
+  background: #ddffaa;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.bambi-scene .scene-sprite {
+  position: absolute;
+  display: block;
+  margin: 0;
+  max-width: none;
+  max-height: none;
+  object-fit: fill;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+.bambi-scene .scene-control {
+  position: absolute;
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.bambi-scene .scene-control:focus-visible {
+  outline: 3px dashed #694827;
+  outline-offset: 3px;
+}
+
+.bambi-scene .scene-control[hidden] { display: none; }
+
+.scene-status {
+  position: absolute;
+  top: 2%;
+  z-index: 6;
+  max-width: 76%;
+  margin: 0;
+  padding: 0.4em 0.75em;
+  border-radius: 0.65em;
+  background: #ffffe8ed;
+  color: #3c2e20;
+  text-align: center;
+  font-size: clamp(12px, 1.55vw, 18px);
+  pointer-events: none;
+}
+
+.scene-status:empty { display: none; }
+
+#textbox .scene-instructions { font-weight: 600; }
+
+.scene-leaf {
+  transform-origin: 40% 85%;
+  animation: scene-grow 1s both;
+}
+
+.scene-heart {
+  animation: scene-float 4s ease-in-out infinite;
+}
+
+.scene-eye {
+  translate: var(--look-x, 0%) var(--look-y, 0%);
+  transition: translate 120ms ease-out;
+}
+
+.scene-eye-idle {
+  animation: scene-glance 5s ease-in-out infinite;
+}
+
+.scene-maze { touch-action: none; }
+.scene-maze .scene-walker { cursor: grab; }
+.scene-maze .scene-walker.is-walking { cursor: grabbing; }
+
+.scene-walker .scene-leg {
+  transform-origin: 50% 12%;
+}
+
+.is-walking .scene-leg {
+  animation: scene-step 360ms ease-in-out infinite alternate;
+}
+
+.is-walking .scene-leg-reverse {
+  animation-direction: alternate-reverse;
+}
+
+.scene-food {
+  touch-action: none;
+  transition: filter 150ms, scale 150ms;
+}
+
+.scene-food:hover, .scene-food.is-selected {
+  filter: drop-shadow(0 0 5px #fff9d6);
+  scale: 1.11;
+}
+
+.bambi-scene .scene-food-ghost {
+  z-index: 5;
+  filter: drop-shadow(0 0 5px #fff9d6);
+}
+
+.scene-fed {
+  animation: scene-fed 450ms ease-out;
+}
+
+@keyframes scene-grow {
+  from { opacity: 0; transform: scale(0.05); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes scene-float {
+  0% { opacity: 0; translate: 0 55%; }
+  22%, 58% { opacity: 1; }
+  100% { opacity: 0; translate: 0 -120%; }
+}
+
+@keyframes scene-glance {
+  0%, 100% { transform: translate(-13%, 3%); }
+  42%, 68% { transform: translate(15%, -9%); }
+}
+
+@keyframes scene-step {
+  from { rotate: -17deg; }
+  to { rotate: 17deg; }
+}
+
+@keyframes scene-fed {
+  45% { scale: 1.05; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bambi-scene *, .bambi-scene *::before, .bambi-scene *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
