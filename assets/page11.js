@@ -152,6 +152,7 @@
   }
 
   const board = document.querySelector('[data-bambi-scene="11"]');
+  board.replaceChildren();
   drawBackground(board);
   feedGobo(board, board.parentElement.querySelector('.scene-status'));
 })();

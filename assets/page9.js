@@ -44,6 +44,7 @@
   }
 
   const board = document.querySelector('[data-bambi-scene="9"]');
+  board.replaceChildren();
   drawBackground(board);
   animateDeer(board);
 })();

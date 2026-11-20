@@ -150,6 +150,7 @@
   }
 
   const board = document.querySelector('[data-bambi-scene="10"]');
+  board.replaceChildren();
   drawBackground(board);
   followTrail(board, board.parentElement.querySelector('.scene-status'));
 })();
