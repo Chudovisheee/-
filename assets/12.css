@@ -14,6 +14,7 @@
 
 .middle-trees { z-index: 1; }
 .bambi-run, .blood { z-index: 2; }
-.foreground-trees, .mist { z-index: 3; }
+.foreground-trees { z-index: 1; }
+.mist { z-index: 3; }
 .gobo-run, .blood-drops { z-index: 4; }
 .bush { z-index: 5; }

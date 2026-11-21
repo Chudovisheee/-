@@ -17,6 +17,9 @@
       const entryY = 32;
       const duration = 2100;
       const stride = 350;
+      fawn.animate([{ zIndex: 1 }, { zIndex: 1 }], {
+        delay, duration: stride * (side === 'right' ? 2 : 5)
+      });
       fawn.animate([
         { transform: `translate(${entryX}%, ${entryY}%)`, opacity: 0 },
         { opacity: 1, offset: .14 },
