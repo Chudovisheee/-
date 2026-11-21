@@ -39,3 +39,6 @@
 .right-fawn { left: -9%; right: 9%; transform-origin: 81% 85%; }
 
 .left-fawn img[class*="-leg-"], .right-fawn img[class*="-leg-"] { transform-origin: 50% 8%; }
+
+.adult { isolation: isolate; }
+.right-fawn { left: -12%; right: 12%; top: 8%; bottom: -8%; scale: .78; }

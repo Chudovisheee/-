@@ -7,8 +7,8 @@
       { transform: 'translate(0, 0)' }
     ], { duration: 4900, easing: 'ease-out', fill: 'both' });
     scene.querySelector('.gobo-run').animate([
-      { transform: 'translate(-82%, 5%)', offset: 0 },
-      { transform: 'translate(-12%, 2%)', offset: 0.79 },
+      { transform: 'translate(-78%, -13%)', offset: 0 },
+      { transform: 'translate(-8%, -12%)', offset: 0.79 },
       { transform: 'translate(0, 0)', offset: 1 }
     ], { duration: 5600, fill: 'both' });
     const stride = [

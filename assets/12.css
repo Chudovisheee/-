@@ -20,3 +20,6 @@
 .bush { z-index: 5; }
 .bambi { left: 46.5%; top: 56%; width: 20%; }
 .blood { left: 21.96%; top: 64.8%; width: 29.03%; }
+
+.gobo, .blood-drops { left: 76.8%; top: 74%; width: 14.8%; }
+.gobo-run { z-index: 2; }
