@@ -83,70 +83,55 @@
       [390, 784], [313, 837], [229, 905]
     ];
 
-    const junctions = new Map();
-    function nodeAt([px, py]) {
-      const key = px + ',' + py;
-      if (!junctions.has(key)) junctions.set(key, { x: px, y: py, edges: [] });
-      return junctions.get(key);
-    }
-
-    function connect(points, danger) {
-      let first;
-      for (let i = 1; i < points.length; i++) {
-        const a = nodeAt(points[i - 1]);
-        const b = nodeAt(points[i]);
-        const edge = { a, b, danger };
-        a.edges.push(edge);
-        b.edges.push(edge);
-        if (!first) first = edge;
+    const halfWidth = 46;
+    const strips = [];
+    for (const trail of [route, greenTrail]) {
+      for (let i = 1; i < trail.length; i++) {
+        const [ax, ay] = trail[i - 1];
+        const dx = trail[i][0] - ax;
+        const dy = trail[i][1] - ay;
+        strips.push({ ax, ay, dx, dy, lengthSquared: dx * dx + dy * dy, danger: trail === greenTrail });
       }
-      return first;
     }
 
-    let current = connect(route, false);
-    connect(greenTrail, true);
-    const safeEnd = nodeAt(route[route.length - 1]);
-    const dangerEnd = nodeAt(greenTrail[greenTrail.length - 1]);
+    function centerAt(px, py, strip) {
+      const t = Math.max(0, Math.min(1,
+        ((px - strip.ax) * strip.dx + (py - strip.ay) * strip.dy) / strip.lengthSquared));
+      return [strip.ax + t * strip.dx, strip.ay + t * strip.dy];
+    }
 
+    let danger = false;
     function move(nextX, nextY) {
       if (ended) return;
-      const candidates = new Set([current]);
-      function explore(node, remaining) {
-        if (remaining < 0) return;
-        for (const edge of node.edges) {
-          if (candidates.has(edge)) continue;
-          candidates.add(edge);
-          const other = edge.a === node ? edge.b : edge.a;
-          explore(other, remaining - Math.hypot(other.x - node.x, other.y - node.y));
-        }
+      let bestError = Infinity;
+      let nearestCenter = Infinity;
+      let bestX = x;
+      let bestY = y;
+      for (const strip of strips) {
+        const [hereX, hereY] = centerAt(x, y, strip);
+        if (Math.hypot(x - hereX, y - hereY) > halfWidth + 0.01) continue;
+        const [cx, cy] = centerAt(nextX, nextY, strip);
+        const dx = nextX - cx;
+        const dy = nextY - cy;
+        const distance = Math.hypot(dx, dy);
+        const error = Math.max(0, distance - halfWidth);
+        if (error > bestError || (error === bestError && distance >= nearestCenter)) continue;
+        const scale = distance > halfWidth ? halfWidth / distance : 1;
+        bestX = cx + dx * scale;
+        bestY = cy + dy * scale;
+        bestError = error;
+        nearestCenter = distance;
+        danger = strip.danger;
       }
-      for (const node of [current.a, current.b]) {
-        explore(node, 65 - Math.hypot(x - node.x, y - node.y));
-      }
-      let bestDistance = 98;
-      let selected;
-      for (const edge of candidates) {
-        const dx = edge.b.x - edge.a.x;
-        const dy = edge.b.y - edge.a.y;
-        const t = Math.max(0, Math.min(1, ((nextX - edge.a.x) * dx + (nextY - edge.a.y) * dy) / (dx * dx + dy * dy)));
-        const px = edge.a.x + dx * t;
-        const py = edge.a.y + dy * t;
-        const distance = Math.hypot(nextX - px, nextY - py);
-        if (distance < bestDistance) {
-          bestDistance = distance;
-          selected = { edge, px, py };
-        }
-      }
-      if (!selected || Math.hypot(selected.px - x, selected.py - y) < 0.1) return;
-      current = selected.edge;
-      x = selected.px;
-      y = selected.py;
+      if (Math.hypot(bestX - x, bestY - y) < 0.01) return;
+      x = bestX;
+      y = bestY;
       draw();
       walker.classList.add('is-walking');
       clearTimeout(stepTimer);
       stepTimer = setTimeout(() => walker.classList.remove('is-walking'), 180);
-      const atHunter = current.b === dangerEnd && Math.hypot(x - dangerEnd.x, y - dangerEnd.y) < 24;
-      const atFaline = current.b === safeEnd && Math.hypot(x - safeEnd.x, y - safeEnd.y) < 24;
+      const atHunter = Math.hypot(x - 229, y - 905) < 58;
+      const atFaline = Math.hypot(x - 802, y - 854) < 58;
       if (atHunter || atFaline) {
         ended = true;
         if (atHunter) finish('Охотник заметил Бемби', 'На развилке можно повернуть обратно и поискать Фалину.');
@@ -156,7 +141,7 @@
         }
         return;
       }
-      const warning = current.danger ? 'Осторожно! Бемби может попасться охотнику.' : '';
+      const warning = danger ? 'Осторожно! Бемби может попасться охотнику.' : '';
       if (status.textContent !== warning) status.textContent = warning;
     }
 
