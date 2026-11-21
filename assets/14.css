@@ -1,0 +1,30 @@
+#scene { width: min(100vh, 56vw, 2160px); height: auto; }
+@media (orientation: portrait) { #scene { width: 100%; } }
+#overflow-wrapper img { position: absolute; height: auto; pointer-events: none; }
+.layers { position: absolute; inset: 0; }
+.background { left: 0.000%; top: 0.000%; width: 100.000%; }
+.forest { left: 0.000%; top: 0.000%; width: 98.229%; }
+.shadows { left: 0.185%; top: 59.352%; width: 97.812%; }
+.mist { left: 0.741%; top: 9.630%; width: 99.427%; }
+.bambi { left: 48.889%; top: 15.000%; width: 21.979%; }
+.ear-left { left: 50.093%; top: 21.481%; width: 6.510%; }
+.ear-right { left: 57.870%; top: 23.056%; width: 6.615%; }
+.left-leg-one { left: 34.815%; top: 78.611%; width: 4.479%; }
+.left-leg-three { left: 25.278%; top: 75.833%; width: 5.000%; }
+.left-leg-two { left: 33.611%; top: 77.778%; width: 3.333%; }
+.left-leg-four { left: 22.037%; top: 76.574%; width: 7.031%; }
+.fawn-left { left: 22.130%; top: 62.130%; width: 20.729%; }
+.left-head { left: 34.537%; top: 64.815%; width: 10.052%; }
+.right-leg-one { left: 71.667%; top: 74.630%; width: 5.052%; }
+.right-leg-three { left: 83.704%; top: 72.778%; width: 5.781%; }
+.right-leg-two { left: 74.815%; top: 74.630%; width: 3.854%; }
+.right-leg-four { left: 82.593%; top: 74.074%; width: 7.396%; }
+.fawn-right { left: 70.278%; top: 56.852%; width: 22.708%; }
+.right-head { left: 70.463%; top: 60.556%; width: 10.000%; }
+.bush-left { left: 40.463%; top: 69.630%; width: 14.792%; }
+.bush-right { left: 76.667%; top: 76.574%; width: 22.135%; }
+.adult { transform-origin: 58% 77%; }
+.left-head { transform-origin: 62% 83%; }
+.right-head { transform-origin: 40% 84%; }
+.ear-left { transform-origin: 87% 91%; }
+.ear-right { transform-origin: 10% 69%; }

@@ -1,0 +1,13 @@
+#scene { width: min(100vh, 56vw, 2160px); height: auto; }
+@media (orientation: portrait) { #scene { width: 100%; } }
+#overflow-wrapper img { position: absolute; height: auto; pointer-events: none; }
+.layers { position: absolute; inset: 0; }
+.background { left: 0.000%; top: 0.000%; width: 100.000%; }
+.middle-trees { left: -6.481%; top: 21.296%; width: 82.708%; }
+.bambi { left: 51.019%; top: 45.000%; width: 24.219%; }
+.blood { left: 21.296%; top: 55.648%; width: 35.156%; }
+.gobo, .blood-drops { left: 63.148%; top: 69.537%; width: 25.885%; }
+.foreground-trees { left: 0.463%; top: 0.000%; width: 97.865%; }
+.bush { left: -1.667%; top: 80.185%; width: 21.042%; }
+.mist { left: 0.000%; top: 22.685%; width: 100.000%; }
+.gobo { transform-origin: 50% 50%; }
