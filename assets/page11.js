@@ -58,7 +58,8 @@
       y: y + height / 2
     }));
     const target = place(button(board, 'Покормить Гобо', 'scene-gobo'), 626, 811, 152, 149);
-    const upperTarget = place(button(board, 'Покормить Гобо на большой картинке', 'scene-gobo'), 699, 282, 128, 177);
+    const upperTarget = place(button(board, 'Покормить Гобо на большой картинке', 'scene-gobo'), 0, 0, 1080, 1080);
+    upperTarget.style.clipPath = 'url(#gobo-outline)';
     upperTarget.tabIndex = -1;
     const food = [
       ['cupcake-1', 947, 162], ['cupcake-2', 391, 595],
@@ -98,6 +99,17 @@
       selected.hidden = true;
       selected = null;
       fed++;
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        for (const layer of [inset, ...eyes.map(eye => eye.image)]) {
+          for (const animation of layer.getAnimations()) {
+            if (animation.id === 'feeding') animation.cancel();
+          }
+          layer.animate([
+            { transform: 'translateX(0)' }, { transform: 'translateX(-3px)' },
+            { transform: 'translateX(2px)' }, { transform: 'translateX(0)' }
+          ], { id: 'feeding', duration: 240, easing: 'ease-in-out' });
+        }
+      }
       const nextFood = board.querySelector('.scene-food:not([hidden])');
       if (hadFocus) (nextFood || target).focus();
       if (fed === food.length) {

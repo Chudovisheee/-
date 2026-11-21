@@ -111,12 +111,19 @@
     function move(nextX, nextY) {
       if (ended) return;
       const candidates = new Set([current]);
-      for (const node of [current.a, current.b]) {
-        if (Math.hypot(x - node.x, y - node.y) < 30) {
-          for (const edge of node.edges) candidates.add(edge);
+      function explore(node, remaining) {
+        if (remaining < 0) return;
+        for (const edge of node.edges) {
+          if (candidates.has(edge)) continue;
+          candidates.add(edge);
+          const other = edge.a === node ? edge.b : edge.a;
+          explore(other, remaining - Math.hypot(other.x - node.x, other.y - node.y));
         }
       }
-      let bestDistance = 72;
+      for (const node of [current.a, current.b]) {
+        explore(node, 65 - Math.hypot(x - node.x, y - node.y));
+      }
+      let bestDistance = 98;
       let selected;
       for (const edge of candidates) {
         const dx = edge.b.x - edge.a.x;
@@ -157,12 +164,16 @@
     walker.addEventListener('pointerdown', event => {
       if (ended || drag || !event.isPrimary || event.button !== 0) return;
       const point = pointer(board, event);
-      drag = { id: event.pointerId, start: point, last: { x, y }, dx: x - point.x, dy: y - point.y };
+      drag = { id: event.pointerId, start: point, facingX: point.x, last: { x, y }, dx: x - point.x, dy: y - point.y };
       walker.setPointerCapture(event.pointerId);
     });
     walker.addEventListener('pointermove', event => {
       if (drag?.id !== event.pointerId) return;
       const point = pointer(board, event);
+      if (Math.abs(point.x - drag.facingX) >= 8) {
+        walker.style.transform = point.x < drag.facingX ? 'scaleX(-1)' : '';
+        drag.facingX = point.x;
+      }
       const grip = Math.max(0, 1 - Math.hypot(point.x - drag.start.x, point.y - drag.start.y) / 90);
       const target = { x: point.x + drag.dx * grip, y: point.y + drag.dy * grip };
       const dx = target.x - drag.last.x;
@@ -182,6 +193,7 @@
       const direction = directions[event.key];
       if (!direction) return;
       event.preventDefault();
+      if (direction[0]) walker.style.transform = direction[0] < 0 ? 'scaleX(-1)' : '';
       move(x + direction[0], y + direction[1]);
     });
   }
