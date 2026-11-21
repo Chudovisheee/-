@@ -2,7 +2,11 @@
   function play() {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const scene = document.getElementById('overflow-wrapper');
-    scene.querySelector('.adult').animate([
+    const landscape = document.createElement('div');
+    landscape.className = 'layers landscape';
+    landscape.append(...scene.children);
+    scene.append(landscape);
+    landscape.animate([
       { transform: 'scale(4.8)', offset: 0 },
       { transform: 'scale(4.8)', offset: 0.15 },
       { transform: 'scale(1)', offset: 1 }
@@ -12,7 +16,7 @@
         { translate: `${sign * 45}% 0` }, { translate: '0 0' }
       ], { duration: 2200, delay, easing: 'ease-out', fill: 'both' });
       scene.querySelector(`.${side}-head`).animate([
-        { rotate: '0deg' }, { rotate: `${sign * 6}deg` }, { rotate: '0deg' }
+        { rotate: '0deg' }, { rotate: `${sign * 4}deg` }, { rotate: '0deg' }
       ], { duration: 2700, delay, iterations: Infinity, easing: 'ease-in-out' });
       scene.querySelector(`.ear-${side}`).animate([
         { rotate: '0deg' }, { rotate: `${sign * 8}deg`, offset: 0.18 },

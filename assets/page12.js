@@ -3,12 +3,12 @@
   const run = () => {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     scene.querySelector('.bambi-run').animate([
-      { transform: 'translate(-60%, 4%)' },
-      { transform: 'translate(0, 0)' }
+      { transform: 'translate(-60%, 10%)' },
+      { transform: 'translate(0, 7%)' }
     ], { duration: 4900, easing: 'ease-out', fill: 'both' });
     scene.querySelector('.gobo-run').animate([
-      { transform: 'translate(-79%, -20%)', offset: 0 },
-      { transform: 'translate(-11%, -10%)', offset: 0.79 },
+      { transform: 'translate(-79%, -3%)', offset: 0 },
+      { transform: 'translate(-11%, -3%)', offset: 0.79 },
       { transform: 'translate(0, 0)', offset: 1 }
     ], { duration: 5600, fill: 'both' });
     const stride = [

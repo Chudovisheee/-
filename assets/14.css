@@ -28,3 +28,6 @@
 .right-head { transform-origin: 40% 84%; }
 .ear-left { transform-origin: 87% 91%; }
 .ear-right { transform-origin: 10% 69%; }
+
+.landscape { transform-origin: 58% 77%; }
+.left-head { left: 34.17%; top: 66.67%; transform-origin: 54% 84%; }

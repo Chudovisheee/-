@@ -11,3 +11,13 @@
 .bush { left: -1.667%; top: 80.185%; width: 21.042%; }
 .mist { left: 0.000%; top: 22.685%; width: 100.000%; }
 .gobo { transform-origin: 50% 50%; }
+
+#overflow-wrapper .foreground-trees { height: 71%; width: 100%; }
+.foreground-trees, .middle-trees { z-index: 1; }
+.mist { z-index: 2; }
+.bambi-run, .blood { z-index: 3; }
+.gobo-run, .blood-drops { z-index: 4; }
+.bush { z-index: 5; }
+
+.blood { translate: 0 24.5%; }
+#overflow-wrapper .middle-trees { top: 8%; height: 73%; }
