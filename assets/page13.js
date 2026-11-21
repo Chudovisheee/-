@@ -15,11 +15,11 @@
       { rotate: '-7deg' }, { rotate: '0deg', offset: 0.72 }, { rotate: '0deg' }
     ], { duration: 1200, iterations: Infinity, easing: 'ease-in-out' });
     scene.querySelector('.tears-left').animate([
-      { opacity: 0, transform: 'translate(0, 0) scale(0.12)' },
-      { opacity: 1, transform: 'translate(-1%, 2%) scale(0.42)', offset: 0.25 },
+      { opacity: 0, translate: '18% 0%' },
+      { opacity: 1, offset: 0.22 },
       { opacity: 1, offset: 0.7 },
-      { opacity: 0, transform: 'translate(-22%, 28%) scale(1)' }
-    ], { duration: 1900, iterations: Infinity, easing: 'ease-in' });
+      { opacity: 0, translate: '-7% 22%' }
+    ], { duration: 2100, iterations: Infinity, easing: 'ease-in' });
     scene.querySelector('.tears-right').animate([
       { opacity: 0, translate: '-43% -30%' }, { opacity: 1, offset: 0.25 },
       { opacity: 1, offset: 0.7 }, { opacity: 0, translate: '12% 21%' }

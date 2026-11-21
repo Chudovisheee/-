@@ -10,8 +10,5 @@
 .jaw { left: 23.796%; top: 58.056%; width: 16.198%; }
 .jaw { transform-origin: 94% 62%; }
 
-.tears-left {
-  left: 70.35%; top: 26.05%;
-  clip-path: inset(34% 83% 47% 0);
-  transform-origin: 15.5% 36.4%;
-}
+
+.tears-left { left: 62.22%; top: 32.9%; }
