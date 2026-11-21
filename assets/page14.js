@@ -13,15 +13,15 @@
     ], { duration: 4600, fill: 'both', easing: 'ease-in-out' });
     for (const [side, sign, delay] of [['left', -1, 4600], ['right', 1, 5100]]) {
       const fawn = scene.querySelector(`.${side}-fawn`);
-      const entryX = side === 'right' ? -4 : sign * 5;
-      const entryY = side === 'right' ? 10 : -19;
+      const entryX = sign * 4;
+      const entryY = 32;
       const duration = 2100;
       const stride = 350;
       fawn.animate([
-        { transform: `translate(${entryX}%, ${entryY}%) scale(.58)`, opacity: 0 },
+        { transform: `translate(${entryX}%, ${entryY}%)`, opacity: 0 },
         { opacity: 1, offset: .14 },
-        { transform: `translate(${entryX / 2}%, ${entryY / 2}%) scale(.78)`, offset: .5 },
-        { transform: 'translate(0, 0) scale(1)', opacity: 1 }
+        { transform: `translate(${entryX / 2}%, ${entryY / 2}%)`, offset: .5 },
+        { transform: 'translate(0, 0)', opacity: 1 }
       ], { duration, delay, fill: 'both' });
       fawn.animate([
         { translate: '0 0' }, { translate: '0 -0.85%', offset: .45 }, { translate: '0 0' }

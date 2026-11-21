@@ -7,9 +7,9 @@
       { transform: 'translate(0, 0)' }
     ], { duration: 4900, easing: 'ease-out', fill: 'both' });
     scene.querySelector('.gobo-run').animate([
-      { transform: 'translate(-78%, -13%)', offset: 0 },
-      { transform: 'translate(-8%, -12%)', offset: 0.79 },
-      { transform: 'translate(0, 0)', offset: 1 }
+      { transform: 'translate(-78%, -16%)', zIndex: 2, offset: 0 },
+      { transform: 'translate(-8%, -9%)', zIndex: 2, offset: 0.79 },
+      { transform: 'translate(0, 0)', zIndex: 4, offset: 1 }
     ], { duration: 5600, fill: 'both' });
     const stride = [
       { translate: '0 0', rotate: '-2deg' },

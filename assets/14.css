@@ -30,15 +30,9 @@
 .ear-right { transform-origin: 10% 69%; }
 
 .landscape { transform-origin: 58% 77%; }
-.left-head { left: 34.17%; top: 66.67%; transform-origin: 54% 84%; }
-
+.adult { isolation: isolate; }
 .adult .bambi { z-index: 1; }
 .ear-left { left: 50.18%; top: 20.82%; transform-origin: 85% 91%; }
 .ear-right { left: 58.92%; top: 22.91%; transform-origin: 5% 69%; }
-.left-fawn { left: 1.5%; right: -1.5%; transform-origin: 32% 89%; }
-.right-fawn { left: -9%; right: 9%; transform-origin: 81% 85%; }
-
+.left-head { left: 34.17%; top: 66.67%; transform-origin: 54% 84%; }
 .left-fawn img[class*="-leg-"], .right-fawn img[class*="-leg-"] { transform-origin: 50% 8%; }
-
-.adult { isolation: isolate; }
-.right-fawn { left: -12%; right: 12%; top: 8%; bottom: -8%; scale: .78; }

@@ -4,11 +4,8 @@
 .layers { position: absolute; inset: 0; }
 .background { left: 0.000%; top: 0.000%; width: 100.000%; }
 .fox { left: 26.389%; top: 6.204%; width: 67.604%; }
-.tears-left { left: 62.222%; top: 29.167%; width: 35.521%; }
+.tears-left { left: 62.222%; top: 30.27%; width: 35.521%; }
 .tears-right { left: 82.130%; top: 37.130%; width: 11.927%; }
 .dog { left: 21.667%; top: 47.870%; width: 69.635%; }
 .jaw { left: 23.796%; top: 58.056%; width: 16.198%; }
 .jaw { transform-origin: 94% 62%; }
-
-
-.tears-left { left: 62.22%; top: 32.9%; }
